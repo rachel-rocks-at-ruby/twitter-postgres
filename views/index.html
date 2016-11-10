@@ -31,7 +31,12 @@
           <img src="http://lorempixel.com/48/48?name={{ tweet.name }}">
           <div class="content">
             <p class="by"><a href="/users/{{ tweet.name }}">{{tweet.name}}</a></p>
-            <p><a href="/tweets/{{ tweet.id }}">{{tweet.content}}</a></p>
+            <p>
+              <a href="/tweets/{{ tweet.tweetid }}">{{tweet.content}}</a>
+              <form id="myform" method="post" action="/delete/{{ tweet.tweetid }}">
+                <input type="submit" value="Remove" class="btn btn-xs btn-danger"/>
+              </form>
+            </p>
           </div>
         </div>
       {% endfor %}

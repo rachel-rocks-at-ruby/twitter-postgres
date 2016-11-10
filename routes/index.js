@@ -7,9 +7,10 @@ module.exports = function makeRouterWithSockets (io) {
 
   // a reusable function
   function respondWithAllTweets (req, res, next){
-    client.query('SELECT * FROM tweets INNER JOIN users ON users.id = tweets.userid', function(err, results){
+    client.query('SELECT name, content, tweets.id as tweetID FROM tweets INNER JOIN users ON users.id = tweets.userid', function(err, results){
       if (err) return next(err);
       var tweets = results.rows;
+      console.log(tweets);
       res.render('index', {
         title: 'Twitter.js',
         tweets: tweets,
@@ -71,6 +72,13 @@ module.exports = function makeRouterWithSockets (io) {
             insertIntoTweets(userid, req.body.name, req.body.content, res);
         })
       }
+    })
+  });
+
+  router.post('/delete/:id', function(req, res, next){
+    client.query('DELETE FROM tweets WHERE id = $1', [req.params.id], function(err, results){
+      if (err) return next(err);
+      res.redirect('/');
     })
   });
 
